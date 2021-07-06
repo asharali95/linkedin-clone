@@ -1,9 +1,13 @@
 import "./App.css";
+import Header from "./Components/Header/Header";
 
 function App() {
-  return <div className="App">
-    <h1>Let's build Linkedin Clone</h1>
-  </div>;
+  return (
+    <div className="App">
+      {/* Header */}
+      <Header />
+    </div>
+  );
 }
 
 export default App;
