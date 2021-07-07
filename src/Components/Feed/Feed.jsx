@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Feed.css";
 import CreateIcon from "@material-ui/icons/Create";
 import InputOption from "../InputOption/InputOption";
@@ -7,11 +7,38 @@ import SubscriptionIcon from "@material-ui/icons/Subscriptions";
 import EventNoteIcon from "@material-ui/icons/EventNote";
 import { CalendarViewDay } from "@material-ui/icons";
 import Post from "../Post/Post";
+import { firestore } from "../../Firebase/Firebase";
+import firebase from "firebase";
+
 const Feed = () => {
+  const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    firestore
+      .collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      });
+  }, []);
 
   const sendPost = (e) => {
     e.preventDefault();
+    firestore.collection("posts").add({
+      name: "Ashar",
+      description: "this is a test",
+      message: input,
+      photoUrl: "",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    setInput("");
   };
   return (
     <div className="feed">
@@ -19,7 +46,11 @@ const Feed = () => {
         <div className="feed_input">
           <CreateIcon />
           <form>
-            <input type="text" />
+            <input
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+              type="text"
+            />
             <button onClick={sendPost} type="submit">
               Send
             </button>
@@ -36,14 +67,15 @@ const Feed = () => {
           />
         </div>
       </div>
-      {posts.map((post) => (
-        <Post />
+      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
+        <Post
+          key={id}
+          name={name}
+          description={description}
+          message={message}
+          photoUrl={photoUrl}
+        />
       ))}
-      <Post
-        name="Ashar Ali"
-        description="this is a test"
-        message="wow this worked"
-      />
     </div>
   );
 };
