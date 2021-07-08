@@ -60,10 +60,11 @@ export var firebaseAuthListener = () => async (dispatch) => {
       if (user) {
         var { uid } = user;
         var query = await firestore.collection("users").doc(uid).get();
-        var { name, email, profilePic } = query.data();
+        var { name, description, email, profilePic } = query.data();
         var userDataForState = {
           uid,
           name,
+          description,
           userEmail: email,
           profilePic,
         };

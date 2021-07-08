@@ -1,8 +1,9 @@
 import { Avatar } from "@material-ui/core";
 import React from "react";
+import { connect } from "react-redux";
 import "./Sidebar.css";
 
-const Sidebar = () => {
+const Sidebar = ({ auth: { profilePic, name, email } }) => {
   const recentItem = (topic) => (
     <div className="sidebar_recentItem">
       <span className="sidebar_hash">#</span>
@@ -17,12 +18,9 @@ const Sidebar = () => {
           src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1650&q=80"
           alt=""
         />
-        <Avatar
-          src="https://media-exp3.licdn.com/dms/image/D4D35AQGulIggJxTFXg/profile-framedphoto-shrink_100_100/0/1625222398547?e=1625824800&v=beta&t=3j-Y7cijADbuuwWsLv_-S6M-2wBNpsOtv1VL1jepyXU"
-          className="sidebar_avatar"
-        />
-        <h2>Ashar Ali</h2>
-        <h4>ashar.alia1999@gmail.com</h4>
+        <Avatar src={profilePic} className="sidebar_avatar" />
+        <h2>{name}</h2>
+        <h4>{email}</h4>
       </div>
 
       <div className="sidebar_stats">
@@ -47,4 +45,7 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+var mapState = (state) => ({
+  auth: state.auth,
+});
+export default connect(mapState)(Sidebar);

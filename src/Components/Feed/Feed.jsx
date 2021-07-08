@@ -9,8 +9,9 @@ import { CalendarViewDay } from "@material-ui/icons";
 import Post from "../Post/Post";
 import { firestore } from "../../Firebase/Firebase";
 import firebase from "firebase";
+import { connect } from "react-redux";
 
-const Feed = () => {
+const Feed = ({ auth: { name, description, profilePic } }) => {
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
 
@@ -31,10 +32,10 @@ const Feed = () => {
   const sendPost = (e) => {
     e.preventDefault();
     firestore.collection("posts").add({
-      name: "Ashar",
-      description: "this is a test",
+      name,
+      description,
       message: input,
-      photoUrl: "",
+      photoUrl: profilePic,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -80,4 +81,8 @@ const Feed = () => {
   );
 };
 
-export default Feed;
+var mapState = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapState)(Feed);
