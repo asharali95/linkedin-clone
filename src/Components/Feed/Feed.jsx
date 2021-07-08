@@ -11,7 +11,7 @@ import { firestore } from "../../Firebase/Firebase";
 import firebase from "firebase";
 import { connect } from "react-redux";
 
-const Feed = ({ auth: { name, description, profilePic } }) => {
+const Feed = ({ auth: { name, userEmail, description, profilePic } }) => {
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
 
@@ -31,9 +31,10 @@ const Feed = ({ auth: { name, description, profilePic } }) => {
 
   const sendPost = (e) => {
     e.preventDefault();
+
     firestore.collection("posts").add({
       name,
-      description,
+      description: !description ? userEmail : description,
       message: input,
       photoUrl: profilePic,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
