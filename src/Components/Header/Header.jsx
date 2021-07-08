@@ -7,8 +7,10 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import BusinessCenterIcon from "@material-ui/icons/BusinessCenter";
 import "./Header.css";
 import HeaderOption from "../HeaderOption/HeaderOption";
+import { connect } from "react-redux";
+import { signOut } from "../../Redux/auth/authActions";
 
-const Header = () => {
+const Header = ({ signOut }) => {
   return (
     <div className="header">
       <div className="header_left">
@@ -32,9 +34,13 @@ const Header = () => {
           avatar="https://media-exp3.licdn.com/dms/image/D4D35AQGulIggJxTFXg/profile-framedphoto-shrink_100_100/0/1625222398547?e=1625824800&v=beta&t=3j-Y7cijADbuuwWsLv_-S6M-2wBNpsOtv1VL1jepyXU"
           title="me"
         />
+        <button onClick={() => signOut()}>signout</button>
       </div>
     </div>
   );
 };
 
-export default Header;
+var actions = {
+  signOut,
+};
+export default connect(null, actions)(Header);

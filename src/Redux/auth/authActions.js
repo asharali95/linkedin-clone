@@ -1,6 +1,5 @@
-import { auth, firestore } from "../../Firebase/Firebase";
+import { auth, firestore, serverTimeStamp } from "../../Firebase/Firebase";
 import { REMOVE_USER, SET_USER } from "./authConstants";
-import history from "../../history/history";
 export var setUser = (user) => async (dispatch) => {
   try {
     dispatch({
@@ -19,12 +18,31 @@ export var signIn =
   ({ email, password }) =>
   async () => {
     try {
-      // console.log(cred)
       await auth.signInWithEmailAndPassword(email, password);
-      //navigate to home page
-      history.push("/");
     } catch (error) {
       console.log(error);
+    }
+  };
+
+export var signup =
+  ({ name, email, password, profilePic }) =>
+  async () => {
+    try {
+      // create user on firebase auth section
+      var {
+        user: { uid },
+      } = await auth.createUserWithEmailAndPassword(email, password);
+      console.log(uid);
+      var userInfo = {
+        name,
+        email,
+        profilePic,
+        createdAt: serverTimeStamp(),
+      };
+      //set user data to firestore
+      await firestore.collection("users").doc(uid).set(userInfo);
+    } catch (error) {
+      return alert(error.message);
     }
   };
 
@@ -33,7 +51,7 @@ export var signOut = () => async () => {
     // signout user from firebase auth
     await auth.signOut();
   } catch (error) {
-    console.log(error);
+    return alert(error.message);
   }
 };
 export var firebaseAuthListener = () => async (dispatch) => {
@@ -42,15 +60,17 @@ export var firebaseAuthListener = () => async (dispatch) => {
       if (user) {
         var { uid } = user;
         var query = await firestore.collection("users").doc(uid).get();
-        var { fullName, email } = query.data();
+        var { name, email, profilePic } = query.data();
         var userDataForState = {
-          fullName,
-          userEmail: email,
           uid,
+          name,
+          userEmail: email,
+          profilePic,
         };
         dispatch(setUser(userDataForState));
       } else {
-        dispatch(removeUser());      }
+        dispatch(removeUser());
+      }
     });
   } catch (error) {
     console.log(error);
