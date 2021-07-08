@@ -3,7 +3,6 @@ import React from "react";
 import "./Sidebar.css";
 
 const Sidebar = () => {
-    
   const recentItem = (topic) => (
     <div className="sidebar_recentItem">
       <span className="sidebar_hash">#</span>
@@ -19,7 +18,7 @@ const Sidebar = () => {
           alt=""
         />
         <Avatar
-          src="https://media-exp3.licdn.com/dms/image/D4D35AQGulIggJxTFXg/profile-framedphoto-shrink_200_200/0/1625222398547?e=1625655600&v=beta&t=R5sN3Ce2pZtKwFK1y0PwUJUSqjYEKIGdf0qlW613OEQ"
+          src="https://media-exp3.licdn.com/dms/image/D4D35AQGulIggJxTFXg/profile-framedphoto-shrink_100_100/0/1625222398547?e=1625824800&v=beta&t=3j-Y7cijADbuuwWsLv_-S6M-2wBNpsOtv1VL1jepyXU"
           className="sidebar_avatar"
         />
         <h2>Ashar Ali</h2>
