@@ -1,4 +1,5 @@
 .login {
+  height: 100%;
   display: grid;
   place-items: center;
   margin-left: auto;
@@ -43,5 +44,5 @@
 }
 
 .login > p {
-    margin-top: 20px;
+  margin-top: 20px;
 }
